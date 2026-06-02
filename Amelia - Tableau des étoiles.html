@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Les Étoiles Magiques d'Amelia</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #f0e0ff;
+    font-family: 'Nunito', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    padding: 32px;
+  }
+
+  /* ── Print: each page is A3 landscape ── */
+  @media print {
+    body { background: white; padding: 0; gap: 0; }
+    .page { page-break-after: always; box-shadow: none; }
+    .page:last-child { page-break-after: avoid; }
+    .print-note { display: none; }
+  }
+
+  .print-note {
+    background: #fff;
+    border: 2px dashed #b57bee;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 14px;
+    color: #7a3ab0;
+    font-weight: 700;
+    max-width: 1122px;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* A3 landscape = 420mm × 297mm → at 96dpi ≈ 1587 × 1123px */
+  .page {
+    width: 1122px;
+    height: 794px;
+    background: #FFF5FD;
+    border-radius: 12px;
+    box-shadow: 0 8px 40px #c080e840;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* ── Decorative background blobs ── */
+  .page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 340px 220px at 8% 12%, #f0dcff88 0%, transparent 70%),
+      radial-gradient(ellipse 260px 180px at 92% 88%, #ffe4f588 0%, transparent 70%),
+      radial-gradient(ellipse 200px 160px at 50% 95%, #e8f8e888 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ══════════════════════════════════════════
+     PAGE 1 — TABLEAU
+  ══════════════════════════════════════════ */
+
+  .p1-title {
+    position: absolute;
+    top: 18px;
+    left: 0; right: 0;
+    text-align: center;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 30px;
+    font-weight: 800;
+    color: #7a24bb;
+    letter-spacing: 0.5px;
+    line-height: 1;
+  }
+  .p1-subtitle {
+    position: absolute;
+    top: 54px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #c070c0;
+  }
+
+  /* three columns */
+  .columns {
+    position: absolute;
+    top: 78px;
+    left: 18px;
+    right: 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    height: 428px;
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .col-header {
+    border-radius: 10px;
+    padding: 7px 12px;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+  .col-header.purple { background: #e8d0ff; color: #6a16a8; }
+  .col-header.green  { background: #d8f4d8; color: #1e5e1e; }
+  .col-header.gold   { background: #fff3c0; color: #7a5800; }
+
+  .task-row {
+    background: white;
+    border-radius: 8px;
+    border: 1.2px solid #e0c8f0;
+    padding: 0 10px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    height: 52px;
+    flex-shrink: 0;
+  }
+  .task-row.green-border { border-color: #b0ddb0; }
+  .task-row.gold-border  { border-color: #e0d090; }
+
+  .task-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .task-icon.purple { background: #f2e4ff; }
+  .task-icon.green  { background: #e4f7e4; }
+  .task-icon.gold   { background: #fff8dc; }
+
+  .task-label {
+    flex: 1;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #3a1a5a;
+    line-height: 1.25;
+  }
+  .task-row.green-border .task-label { color: #1a4a1a; }
+  .task-row.gold-border  .task-label { color: #5a4000; }
+
+  .pts-badge {
+    flex-shrink: 0;
+    border-radius: 20px;
+    padding: 3px 9px;
+    font-size: 11px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .pts-badge.purple { background: #eedcff; color: #7a18c0; }
+  .pts-badge.green  { background: #d8f4d8; color: #1e6a1e; }
+  .pts-badge.gold   { background: #fff0a0; color: #7a5000; }
+
+  /* storage zone */
+  .storage-zone {
+    position: absolute;
+    bottom: 12px;
+    left: 18px;
+    right: 18px;
+    height: 258px;
+  }
+
+  .storage-header {
+    background: #f5d8ff;
+    border-radius: 10px 10px 0 0;
+    border: 1.5px solid #d8a8f0;
+    border-bottom: none;
+    padding: 7px 16px;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: #6a18a8;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+  }
+
+  .storage-body {
+    background: white;
+    border: 1.5px solid #d8a8f0;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    height: 222px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* dot grid via SVG background */
+  .storage-body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, #d8b0f0 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    background-position: 12px 12px;
+    opacity: 0.5;
+  }
+
+  /* star legend strip inside storage */
+  .star-legend {
+    position: absolute;
+    bottom: 10px;
+    left: 16px;
+    right: 16px;
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+  /* ══════════════════════════════════════════
+     PAGE 2 — STARS TO CUT
+  ══════════════════════════════════════════ */
+
+  .p2-title {
+    position: absolute;
+    top: 18px; left: 0; right: 0;
+    text-align: center;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: #7a24bb;
+  }
+  .p2-subtitle {
+    position: absolute;
+    top: 54px; left: 0; right: 0;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #a060c0;
+  }
+
+  .star-rows {
+    position: absolute;
+    top: 80px;
+    left: 24px; right: 24px; bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .star-row-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1.5px dashed #d0a0e8;
+  }
+  .star-row-section:last-child { border-bottom: none; }
+
+  .star-row-label {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 4px 0 2px 6px;
+    flex-shrink: 0;
+  }
+
+  .star-row-stars {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 2px 6px 6px;
+    flex-wrap: wrap;
+  }
+</style>
+</head>
+<body>
+
+<div class="print-note">
+  🖨️ Pour imprimer : Fichier → Imprimer → Format A3, Paysage, Ajuster à la page — ou Enregistrer en PDF
+</div>
+
+<!-- ══════════════════ PAGE 1 : TABLEAU ══════════════════ -->
+<div class="page" id="page1">
+
+  <div class="p1-title">✨&nbsp; Les Étoiles Magiques d'Amelia &nbsp;✨</div>
+  <div class="p1-subtitle">Gagne des étoiles, réalise tes rêves de princesse !</div>
+
+  <!-- Decorative corner stars -->
+  <svg style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none" xmlns="http://www.w3.org/2000/svg">
+    <g opacity="0.18">
+      <polygon points="44,6 50,22 68,22 54,32 60,48 44,38 28,48 34,32 20,22 38,22" fill="#b57bee"/>
+      <polygon points="1090,10 1095,24 1110,24 1098,32 1103,47 1090,39 1077,47 1082,32 1069,24 1085,24" fill="#e89fd4"/>
+      <polygon points="30,760 35,774 50,774 38,782 43,797 30,789 17,797 22,782 10,774 25,774" fill="#a0d090"/>
+      <polygon points="1095,755 1099,767 1112,767 1102,774 1106,787 1095,780 1084,787 1088,774 1078,767 1091,767" fill="#ffd166"/>
+    </g>
+  </svg>
+
+  <div class="columns">
+
+    <!-- COL 1 : Bonnes actions -->
+    <div class="col">
+      <div class="col-header purple">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6a16a8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Bonnes actions du quotidien
+      </div>
+
+      <div class="task-row">
+        <div class="task-icon purple">🌙</div>
+        <div class="task-label">Dormir toute seule</div>
+        <div class="pts-badge purple">
+          <svg width="11" height="11" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#9b44cc"/></svg>
+          +3
+        </div>
+      </div>
+
+      <div class="task-row">
+        <div class="task-icon purple">🚽</div>
+        <div class="task-label">Pipi / caca seule</div>
+        <div class="pts-badge purple">
+          <svg width="11" height="11" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#9b44cc"/></svg>
+          +1
+        </div>
+      </div>
+
+      <div class="task-row">
+        <div class="task-icon purple">🍽️</div>
+        <div class="task-label">Mettre dans le lave-vaisselle</div>
+        <div class="pts-badge purple">
+          <svg width="11" height="11" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#9b44cc"/></svg>
+          +2
+        </div>
+      </div>
+
+      <div class="task-row">
+        <div class="task-icon purple">🧸</div>
+        <div class="task-label">Ranger sa chambre</div>
+        <div class="pts-badge purple">
+          <svg width="11" height="11" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#9b44cc"/></svg>
+          +3
+        </div>
+      </div>
+
+      <div class="task-row">
+        <div class="task-icon purple">🪥</div>
+        <div class="task-label">Se brosser les dents</div>
+        <div class="pts-badge purple">
+          <svg width="11" height="11" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#9b44cc"/></svg>
+          +2
+        </div>
+      </div>
+
+      <div class="task-row">
+        <div class="task-icon purple">👗</div>
+        <div class="task-label">Ranger ses habits</div>
+        <div class="pts-badge purple">
+          <svg width="11" height="11" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#9b44cc"/></svg>
+          +2
+        </div>
+      </div>
+    </div>
+
+    <!-- COL 2 : Émotions -->
+    <div class="col">
+      <div class="col-header green">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e5e1e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        Gestion des émotions
+      </div>
+
+      <div class="task-row green-border">
+        <div class="task-icon green">🌬️</div>
+        <div class="task-label">Se calme toute seule</div>
+        <div class="pts-badge green">
+          <svg width="11" height="11" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#2e7a2e"/></svg>
+          +2
+        </div>
+      </div>
+
+      <div class="task-row green-border">
+        <div class="task-icon green">💬</div>
+        <div class="task-label">Dit "je suis en colère"</div>
+        <div class="pts-badge green">
+          <svg width="11" height="11" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#2e7a2e"/></svg>
+          +2
+        </div>
+      </div>
+
+      <div class="task-row green-border">
+        <div class="task-icon green">🤝</div>
+        <div class="task-label">Négocie au lieu de crier</div>
+        <div class="pts-badge green">
+          <svg width="11" height="11" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#2e7a2e"/></svg>
+          +3
+        </div>
+      </div>
+
+      <div class="task-row green-border">
+        <div class="task-icon green">👍</div>
+        <div class="task-label">Accepte un "non" sans crise</div>
+        <div class="pts-badge green">
+          <svg width="11" height="11" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#2e7a2e"/></svg>
+          +3
+        </div>
+      </div>
+
+      <div class="task-row green-border">
+        <div class="task-icon green">🤗</div>
+        <div class="task-label">Demande un câlin</div>
+        <div class="pts-badge green">
+          <svg width="11" height="11" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#2e7a2e"/></svg>
+          +1
+        </div>
+      </div>
+
+      <div class="task-row green-border">
+        <div class="task-icon green">🧘</div>
+        <div class="task-label">Respire pour se calmer</div>
+        <div class="pts-badge green">
+          <svg width="11" height="11" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#2e7a2e"/></svg>
+          +2
+        </div>
+      </div>
+    </div>
+
+    <!-- COL 3 : Récompenses -->
+    <div class="col">
+      <div class="col-header gold">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7a5800" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        Mes récompenses
+      </div>
+
+      <div class="task-row gold-border">
+        <div class="task-icon gold">📺</div>
+        <div class="task-label">1 épisode TV en plus</div>
+        <div class="pts-badge gold">
+          <svg width="11" height="11" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#c49a00"/></svg>
+          5
+        </div>
+      </div>
+
+      <div class="task-row gold-border">
+        <div class="task-icon gold">🍦</div>
+        <div class="task-label">Choisir la glace du soir</div>
+        <div class="pts-badge gold">
+          <svg width="11" height="11" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#c49a00"/></svg>
+          8
+        </div>
+      </div>
+
+      <div class="task-row gold-border">
+        <div class="task-icon gold">🎨</div>
+        <div class="task-label">Activité créative spéciale</div>
+        <div class="pts-badge gold">
+          <svg width="11" height="11" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#c49a00"/></svg>
+          10
+        </div>
+      </div>
+
+      <div class="task-row gold-border">
+        <div class="task-icon gold">✨</div>
+        <div class="task-label">Pochette de stickers magiques</div>
+        <div class="pts-badge gold">
+          <svg width="11" height="11" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#c49a00"/></svg>
+          15
+        </div>
+      </div>
+
+      <div class="task-row gold-border">
+        <div class="task-icon gold">🎡</div>
+        <div class="task-label">Sortie spéciale (parc, ciné…)</div>
+        <div class="pts-badge gold">
+          <svg width="11" height="11" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#c49a00"/></svg>
+          40
+        </div>
+      </div>
+
+      <div class="task-row gold-border" style="border-color:#ffd166;background:#fffdf0;">
+        <div class="task-icon gold" style="background:#fff8c0;font-size:20px;">👑</div>
+        <div class="task-label" style="color:#7a5000;font-size:12.5px;font-weight:900;">La grande robe de princesse</div>
+        <div class="pts-badge gold" style="background:#ffe070;font-size:12px;">
+          <svg width="13" height="13" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#c49a00"/></svg>
+          90
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /columns -->
+
+  <!-- Storage zone -->
+  <div class="storage-zone">
+    <div class="storage-header">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6a18a8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Mes étoiles — colle tes étoiles ici, enlève-les pour payer une récompense !
+    </div>
+    <div class="storage-body">
+      <!-- star legend -->
+      <div class="star-legend">
+        <!-- Pink 1pt -->
+        <div class="legend-item" style="color:#a0003a;">
+          <svg width="22" height="22" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#FF8FAB" stroke="#a0003a" stroke-width="1.2"/><text x="12" y="15.5" font-size="7" font-weight="900" font-family="Nunito,sans-serif" fill="#7A003A" text-anchor="middle">1</text></svg>
+          Rose = 1 pt
+        </div>
+        <!-- Yellow 2pt -->
+        <div class="legend-item" style="color:#7a5000;">
+          <svg width="22" height="22" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#FFD166" stroke="#a07000" stroke-width="1.2"/><text x="12" y="15.5" font-size="7" font-weight="900" font-family="Nunito,sans-serif" fill="#7A5000" text-anchor="middle">2</text></svg>
+          Jaune = 2 pts
+        </div>
+        <!-- Purple 3pt -->
+        <div class="legend-item" style="color:#4a007a;">
+          <svg width="22" height="22" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#A78BFA" stroke="#5a00a0" stroke-width="1.2"/><text x="12" y="15.5" font-size="7" font-weight="900" font-family="Nunito,sans-serif" fill="#3B007A" text-anchor="middle">3</text></svg>
+          Violette = 3 pts
+        </div>
+        <!-- Mint 5pt -->
+        <div class="legend-item" style="color:#004d2e;">
+          <svg width="22" height="22" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#6EE7B7" stroke="#007a50" stroke-width="1.2"/><text x="12" y="15.5" font-size="7" font-weight="900" font-family="Nunito,sans-serif" fill="#004D2E" text-anchor="middle">5</text></svg>
+          Verte = 5 pts
+        </div>
+        <div style="margin-left:auto;font-size:10.5px;color:#b080c8;font-weight:700;">
+          💡 Velcro côté doux au dos des étoiles · Velcro côté grattant sur cette zone
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page1 -->
+
+
+<!-- ══════════════════ PAGE 2 : ÉTOILES À DÉCOUPER ══════════════════ -->
+<div class="page" id="page2">
+
+  <div class="p2-title">✂️&nbsp; Étoiles à découper &amp; plastifier</div>
+  <div class="p2-subtitle">Colle un petit morceau de velcro (côté doux ☁️) au dos de chaque étoile</div>
+
+  <div class="star-rows">
+
+    <!-- ROW 1 : Pink, 1pt, 32 stars -->
+    <div class="star-row-section">
+      <div class="star-row-label" style="color:#a0003a;">⭐ Rose — 1 point</div>
+      <div class="star-row-stars">
+        <!-- 32 pink stars via SVG inline -->
+        <svg xmlns="http://www.w3.org/2000/svg" id="stars-pink"></svg>
+      </div>
+    </div>
+
+    <!-- ROW 2 : Yellow, 2pt, 26 stars -->
+    <div class="star-row-section">
+      <div class="star-row-label" style="color:#7a5000;">⭐ Jaune — 2 points</div>
+      <div class="star-row-stars">
+        <svg xmlns="http://www.w3.org/2000/svg" id="stars-yellow"></svg>
+      </div>
+    </div>
+
+    <!-- ROW 3 : Purple, 3pt, 20 stars -->
+    <div class="star-row-section">
+      <div class="star-row-label" style="color:#4a007a;">⭐ Violette — 3 points</div>
+      <div class="star-row-stars">
+        <svg xmlns="http://www.w3.org/2000/svg" id="stars-purple"></svg>
+      </div>
+    </div>
+
+    <!-- ROW 4 : Mint, 5pt, 14 stars -->
+    <div class="star-row-section" style="border-bottom:none;">
+      <div class="star-row-label" style="color:#004d2e;">⭐ Verte — 5 points</div>
+      <div class="star-row-stars">
+        <svg xmlns="http://www.w3.org/2000/svg" id="stars-mint"></svg>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- /page2 -->
+
+<script>
+// ── Draw stars using JS for perfect centering ──────────────────────────────
+function starPoints(cx, cy, r, n=5) {
+  const pts = [];
+  const inner = r * 0.42;
+  for (let i = 0; i < n * 2; i++) {
+    const angle = (Math.PI / n) * i - Math.PI / 2;
+    const radius = i % 2 === 0 ? r : inner;
+    pts.push([cx + radius * Math.cos(angle), cy + radius * Math.sin(angle)]);
+  }
+  return pts.map(p => p.join(',')).join(' ');
+}
+
+function makeStar(cx, cy, r, fill, stroke, label, textColor) {
+  const pts = starPoints(cx, cy, r);
+  return `
+    <polygon points="${pts}" fill="${fill}" stroke="${stroke}" stroke-width="1.3"/>
+    <text x="${cx}" y="${cy + r * 0.28}" font-size="${r * 0.72}" font-weight="900"
+      font-family="Nunito,sans-serif" fill="${textColor}" text-anchor="middle"
+      dominant-baseline="auto">${label}</text>
+  `;
+}
+
+function buildStarRow(svgId, count, r, fill, stroke, label, textColor) {
+  const svg = document.getElementById(svgId);
+  const gap = r * 2 + 10;
+  const cols = count;
+  const w = cols * gap;
+  const h = r * 2 + 6;
+  svg.setAttribute('width', w);
+  svg.setAttribute('height', h);
+  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  let html = '';
+  for (let i = 0; i < count; i++) {
+    const cx = r + 3 + i * gap;
+    const cy = r + 3;
+    html += makeStar(cx, cy, r, fill, stroke, label, textColor);
+  }
+  svg.innerHTML = html;
+}
+
+buildStarRow('stars-pink',   30, 20, '#FF8FAB', '#c0005a', '1', '#7A003A');
+buildStarRow('stars-yellow', 24, 22, '#FFD166', '#c09000', '2', '#7A5000');
+buildStarRow('stars-purple', 18, 24, '#A78BFA', '#6000b0', '3', '#3B007A');
+buildStarRow('stars-mint',   12, 26, '#6EE7B7', '#009060', '5', '#004D2E');
+</script>
+
+</body>
+</html>
