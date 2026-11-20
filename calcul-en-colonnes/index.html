@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les Calculs d'Amelia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ═════════ ACCUEIL ═════════ -->
+<section id="ecran-accueil" class="ecran actif">
+  <button id="btn-parents" class="btn-parents" title="Coin des parents : maintenir appuyé">
+    ⚙️<span class="anneau"></span>
+  </button>
+
+  <h1 class="titre">Les Calculs d'Amelia</h1>
+  <div class="total-etoiles">⭐ <span id="acc-etoiles">0</span> étoiles</div>
+
+  <div id="chemin" class="chemin"></div>
+
+  <div class="carte-niveau">
+    <div class="cn-etiquette" id="acc-niveau-num"></div>
+    <div class="cn-titre" id="acc-niveau-nom"></div>
+    <div class="cn-exemple" id="acc-niveau-ex"></div>
+  </div>
+
+  <button id="btn-jouer" class="btn-gros">Jouer ▶</button>
+</section>
+
+<!-- ═════════ JEU ═════════ -->
+<section id="ecran-jeu" class="ecran">
+  <header class="barre-haut">
+    <button id="btn-maison" class="btn-rond" title="Accueil">🏠</button>
+    <div id="jeu-niveau" class="jeu-niveau"></div>
+    <div id="progression" class="progression"></div>
+    <button id="btn-voix" class="btn-rond" title="Écouter la consigne">🔊</button>
+  </header>
+
+  <main class="zone-jeu">
+    <div class="carte carte-calcul">
+      <div id="grille" class="grille"></div>
+    </div>
+
+    <div class="carte carte-cote">
+      <div class="bulle">
+        <div id="bulle-texte" class="bulle-texte"></div>
+        <div id="bulle-astuce" class="bulle-astuce"></div>
+      </div>
+      <div id="pave" class="pave"></div>
+      <div class="actions">
+        <button id="btn-aide" class="btn-aide">🧱 Aide</button>
+        <button id="btn-suivant" class="btn-suivant cache">Suivant ➜</button>
+      </div>
+    </div>
+  </main>
+</section>
+
+<!-- ═════════ FIN DE SESSION ═════════ -->
+<section id="ecran-fin" class="ecran">
+  <div id="confettis" class="confettis"></div>
+  <div class="fin-boite">
+    <div class="fin-titre">Bravo Amelia ! 🎉</div>
+    <div id="fin-etoiles" class="fin-etoiles"></div>
+    <div id="fin-message" class="fin-message"></div>
+    <div class="fin-boutons">
+      <button id="btn-encore" class="btn-gros">Encore ! 🔁</button>
+      <button id="btn-fin-maison" class="btn-moyen">🏠 Accueil</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ COIN DES PARENTS ═════════ -->
+<div id="parents" class="modal cache">
+  <div class="modal-boite">
+    <button id="btn-fermer-parents" class="btn-fermer" title="Fermer">✕</button>
+    <h2>Coin des parents</h2>
+
+    <div class="reglages">
+      <label class="reglage">
+        <span>Niveau actuel</span>
+        <select id="p-niveau"></select>
+      </label>
+      <label class="reglage">
+        <span>Calculs par session</span>
+        <select id="p-nbex">
+          <option value="5">5</option>
+          <option value="8">8</option>
+          <option value="10">10</option>
+          <option value="12">12</option>
+        </select>
+      </label>
+      <label class="reglage case-a-cocher">
+        <input type="checkbox" id="p-auto">
+        <span>Passage automatique au niveau suivant
+          <small>après 2 sessions de suite avec peu d'erreurs (1 erreur max. pour 4 calculs)</small></span>
+      </label>
+      <label class="reglage case-a-cocher">
+        <input type="checkbox" id="p-voix">
+        <span>Lire les consignes à voix haute</span>
+      </label>
+      <label class="reglage case-a-cocher">
+        <input type="checkbox" id="p-son">
+        <span>Sons</span>
+      </label>
+    </div>
+
+    <h3>Progrès par niveau</h3>
+    <table id="p-stats" class="tableau-stats"></table>
+
+    <h3>Dernières sessions</h3>
+    <ul id="p-historique" class="historique"></ul>
+
+    <button id="p-reset" class="btn-danger">Remettre à zéro</button>
+  </div>
+</div>
+
+<script src="js/niveaux.js"></script>
+<script src="js/outils.js"></script>
+<script src="js/blocs.js"></script>
+<script src="js/colonne.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
