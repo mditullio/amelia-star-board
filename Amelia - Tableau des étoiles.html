@@ -283,7 +283,7 @@
     font-family: 'Baloo 2', sans-serif;
     font-size: 13px;
     font-weight: 800;
-    padding: 4px 0 2px 6px;
+    padding: 4px 6px 6px;
     flex-shrink: 0;
   }
 
@@ -556,36 +556,47 @@
 
   <div class="star-rows">
 
-    <!-- ROW 1 : Pink, 1pt, 32 stars -->
+    <!-- ROW 1 : Pink, 1pt, 30 stars -->
     <div class="star-row-section">
       <div class="star-row-label" style="color:#a0003a;">⭐ Rose — 1 point</div>
       <div class="star-row-stars">
-        <!-- 32 pink stars via SVG inline -->
-        <svg xmlns="http://www.w3.org/2000/svg" id="stars-pink"></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" id="stars-pink-1"></svg>
+      </div>
+      <div class="star-row-stars">
+        <svg xmlns="http://www.w3.org/2000/svg" id="stars-pink-2"></svg>
       </div>
     </div>
 
-    <!-- ROW 2 : Yellow, 2pt, 26 stars -->
+    <!-- ROW 2 : Yellow, 2pt, 30 stars -->
     <div class="star-row-section">
       <div class="star-row-label" style="color:#7a5000;">⭐ Jaune — 2 points</div>
       <div class="star-row-stars">
-        <svg xmlns="http://www.w3.org/2000/svg" id="stars-yellow"></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" id="stars-yellow-1"></svg>
+      </div>      
+      <div class="star-row-stars">
+        <svg xmlns="http://www.w3.org/2000/svg" id="stars-yellow-2"></svg>
       </div>
     </div>
 
-    <!-- ROW 3 : Purple, 3pt, 20 stars -->
+    <!-- ROW 3 : Purple, 3pt, 24 stars -->
     <div class="star-row-section">
       <div class="star-row-label" style="color:#4a007a;">⭐ Violette — 3 points</div>
       <div class="star-row-stars">
-        <svg xmlns="http://www.w3.org/2000/svg" id="stars-purple"></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" id="stars-purple-1"></svg>
+      </div>
+      <div class="star-row-stars">
+        <svg xmlns="http://www.w3.org/2000/svg" id="stars-purple-2"></svg>
       </div>
     </div>
 
-    <!-- ROW 4 : Mint, 5pt, 14 stars -->
+    <!-- ROW 4 : Mint, 5pt, 20 stars -->
     <div class="star-row-section" style="border-bottom:none;">
       <div class="star-row-label" style="color:#004d2e;">⭐ Verte — 5 points</div>
       <div class="star-row-stars">
-        <svg xmlns="http://www.w3.org/2000/svg" id="stars-mint"></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" id="stars-mint-1"></svg>
+      </div>
+      <div class="star-row-stars">
+        <svg xmlns="http://www.w3.org/2000/svg" id="stars-mint-2"></svg>
       </div>
     </div>
 
@@ -634,10 +645,14 @@ function buildStarRow(svgId, count, r, fill, stroke, label, textColor) {
   svg.innerHTML = html;
 }
 
-buildStarRow('stars-pink',   30, 20, '#FF8FAB', '#c0005a', '1', '#7A003A');
-buildStarRow('stars-yellow', 24, 22, '#FFD166', '#c09000', '2', '#7A5000');
-buildStarRow('stars-purple', 18, 24, '#A78BFA', '#6000b0', '3', '#3B007A');
-buildStarRow('stars-mint',   12, 26, '#6EE7B7', '#009060', '5', '#004D2E');
+buildStarRow('stars-pink-1',   15, 27, '#FF8FAB', '#c0005a', '1', '#7A003A');
+buildStarRow('stars-pink-2',   15, 27, '#FF8FAB', '#c0005a', '1', '#7A003A');
+buildStarRow('stars-yellow-1', 15, 27, '#FFD166', '#c09000', '2', '#7A5000');
+buildStarRow('stars-yellow-2', 15, 27, '#FFD166', '#c09000', '2', '#7A5000');
+buildStarRow('stars-purple-1', 15, 27, '#A78BFA', '#6000b0', '3', '#3B007A');
+buildStarRow('stars-purple-2', 15, 27, '#A78BFA', '#6000b0', '3', '#3B007A');
+buildStarRow('stars-mint-1',   15, 27, '#6EE7B7', '#009060', '5', '#004D2E');
+buildStarRow('stars-mint-2',   15, 27, '#6EE7B7', '#009060', '5', '#004D2E');
 </script>
 
 </body>
